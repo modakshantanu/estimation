@@ -32,21 +32,23 @@ export function genMul(config : {
 
     let numOp = rngInt(numOperands.low, numOperands.high);
     let result = logRng(rangeCenter, rangeVariance);
-    let avgOp = Math.pow(result, 1 / numOp);
+    let avgOp: number
     let operands: number[] = [];
-
     for (let i = 0; i < numOp; i++) {
-        operands.push(Math.round(logRng(avgOp, operandVariance)));
+        avgOp = Math.pow(result , 1 / (numOp - i));
+        let nextOperand = logRng(avgOp , operandVariance);
+        operands.push(Math.round(nextOperand));
+        result /= nextOperand;
     }
     operands.sort((a,b) => a-b);
     
 
     // Calculate actual result
     result = operands.reduce((acc, cur) => acc * cur);
-
     // scorer
     let scorer = (guess: number, actual: number) : number => {
-        return guess < actual ? (guess / actual) : (actual / guess)
+        let fraction = guess < actual ? (guess / actual) : (actual / guess)
+        return Math.round(fraction * 100)
     }
 
     let questionString = '';

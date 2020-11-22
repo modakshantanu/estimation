@@ -14,9 +14,6 @@ let mainFontStyle = {
 class QuestionView extends React.Component<propType, any>{
     
 
-    constructor(props: propType) {
-        super(props);
-    }
 
     render() {
         return (

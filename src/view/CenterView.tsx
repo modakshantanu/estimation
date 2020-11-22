@@ -3,6 +3,7 @@ import { InputGroup } from 'react-bootstrap';
 import Question from '../logic/Question';
 import InputView from './InputView';
 import QuestionView from './QuestionView';
+import ScoreView from './ScoreView';
 
 type propType = {
     generator: (arg: object) => Question,
@@ -12,7 +13,11 @@ type propType = {
 type stateType = {
     generator: (arg: object) => Question,
     config: object,
-    question: Question   
+    question: Question,
+    recentScore: number,
+    totalScore: number,
+    recentGuess: number,
+    recentAnswer: number
 }
 
 class CenterView extends React.Component<propType, stateType>{
@@ -26,7 +31,11 @@ class CenterView extends React.Component<propType, stateType>{
         this.state = {
             generator: props.generator,
             config: props.config,
-            question: props.generator(props.config)
+            question: props.generator(props.config),
+            recentScore: 0,
+            totalScore: 0,
+            recentGuess: 0,
+            recentAnswer: 0
         }
 
         this.handleAnswerSubmit = this.handleAnswerSubmit.bind(this);
@@ -38,16 +47,25 @@ class CenterView extends React.Component<propType, stateType>{
             <div >
                 <QuestionView question = {this.state.question}/>
                 <InputView inputHandler = {this.handleAnswerSubmit}></InputView>
+                <ScoreView recentScore = {this.state.recentScore} totalScore = {this.state.totalScore}
+                        recentGuess = {this.state.recentGuess} recentAnswer = {this.state.recentAnswer}/>
             </div>
         )
     }
 
     handleAnswerSubmit(answer: number) {
-        let score = Math.round(100 * this.state.question.scorer(answer))
-        console.log(score)
+        let score = this.state.question.scorer(answer)
+        let totalScore = this.state.totalScore + score;
 
         let newQuestion = this.state.generator(this.state.config);
-        this.setState({question: newQuestion})
+        this.setState((state) => ({
+            question: newQuestion,
+            recentScore: score, 
+            totalScore: totalScore,
+            recentGuess: answer,
+            recentAnswer: state.question.answer
+            
+        }))
     }
     
     

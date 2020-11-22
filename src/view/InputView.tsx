@@ -33,7 +33,7 @@ class InputView extends React.Component<propType, any>{
     handleChange(e: any) {
         let inputText: String = e.target.value;
         let lastChar = inputText.slice(-1);
-        if (inputText.length == 0 || (lastChar >= '0' && lastChar <= '9') || lastChar == 'e' || lastChar == '-' || lastChar == '+' || lastChar == '.') {
+        if (inputText.length === 0 || (lastChar >= '0' && lastChar <= '9') || lastChar === 'e' || lastChar === '-' || lastChar === '+' || lastChar === '.') {
             this.setState({text: inputText});
         } 
     }
