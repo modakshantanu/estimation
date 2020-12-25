@@ -74,7 +74,6 @@ class CenterView extends React.Component<propType, stateType>{
         if (curTime - this.prevTimestamp <= 1) {
             return
         }
-        console.log(curTime, this.prevTimestamp)
         this.prevTimestamp = curTime
 
         let next = nextState(this.state.gameState, input);
@@ -84,7 +83,6 @@ class CenterView extends React.Component<propType, stateType>{
     keyCapture(e: KeyboardEvent) {
         
         let inputEvent: Input | undefined = decodeInput(e, this.state.gameState);
-        console.log(inputEvent)
         if (inputEvent !== undefined) {
             this.handleInput(inputEvent);
         }
