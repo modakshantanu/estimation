@@ -4,68 +4,90 @@ import Question from '../logic/Question';
 import InputView from './InputView';
 import QuestionView from './QuestionView';
 import ScoreView from './ScoreView';
+import { Theme } from '../App'
+import GameInfoView from './GameInfoView';
+import ButtonRow from './ButtonRow';
+import { Input } from '../logic/GameController';
+import GameState from '../logic/GameState';
+import {nextState } from '../logic/GameController'
+import { decodeInput } from '../logic/KeyDecoder';
 
 type propType = {
     generator: (arg: object) => Question,
-    config: object
+    config: object,
+    theme: Theme
 }
 
 type stateType = {
-    generator: (arg: object) => Question,
-    config: object,
-    question: Question,
-    recentScore: number,
-    totalScore: number,
-    recentGuess: number,
-    recentAnswer: number
+    gameState: GameState
 }
+
+
 
 class CenterView extends React.Component<propType, stateType>{
     
     
+    prevTimestamp: number = 0;
 
     constructor(props: propType) {
         super(props);
 
 
         this.state = {
-            generator: props.generator,
-            config: props.config,
-            question: props.generator(props.config),
-            recentScore: 0,
-            totalScore: 0,
-            recentGuess: 0,
-            recentAnswer: 0
+            gameState: new GameState()
         }
 
-        this.handleAnswerSubmit = this.handleAnswerSubmit.bind(this);
         
+
+    }
+
+    componentDidMount() {
+        
+        this.handleInput = this.handleInput.bind(this);   
+        this.keyCapture  = this.keyCapture.bind(this);
+        
+        document.body.addEventListener('keydown', this.keyCapture)
+    }
+
+    componentWillUnmount() {
+        document.body.removeEventListener('keydown', this.keyCapture);
     }
 
     render() {
+        let gameState = this.state.gameState;
         return (
-            <div >
-                <QuestionView question = {this.state.question}/>
-                <InputView inputHandler = {this.handleAnswerSubmit}></InputView>
-                <ScoreView recentScore = {this.state.recentScore} totalScore = {this.state.totalScore}
-                        recentGuess = {this.state.recentGuess} recentAnswer = {this.state.recentAnswer}/>
+            <div>
+                
+                <GameInfoView theme = {this.props.theme} gameState={gameState} inputHandler = {this.handleInput}/> 
+                <QuestionView question = {gameState.currentQuestion} theme ={this.props.theme} gameState={gameState}/>
+                <InputView inputHandler = {this.handleInput} theme = {this.props.theme} gameState={gameState}></InputView>
+                <ScoreView recentScore = {gameState.recentScore} totalScore = {gameState.totalScore}
+                        recentGuess = {gameState.recentGuess} recentAnswer = {gameState.recentAnswer}/>
+                <ButtonRow inputHandler = {this.handleInput} gameState={gameState}/>
             </div>
         )
     }
 
-    handleAnswerSubmit(answer: number) {
-        let score = this.state.question.scorer(answer)
-        let totalScore = this.state.totalScore + score;
+    handleInput(input: Input) {
 
-        let newQuestion = this.state.generator(this.state.config);
-        this.setState((state) => ({
-            question: newQuestion,
-            recentScore: score, 
-            totalScore: totalScore,
-            recentGuess: answer,
-            recentAnswer: state.question.answer
-            
-        }))
+        let curTime = Date.now()
+        if (curTime - this.prevTimestamp <= 1) {
+            return
+        }
+        console.log(curTime, this.prevTimestamp)
+        this.prevTimestamp = curTime
+
+        let next = nextState(this.state.gameState, input);
+        this.setState({gameState: next})
+    }
+
+    keyCapture(e: KeyboardEvent) {
+        
+        let inputEvent: Input | undefined = decodeInput(e, this.state.gameState);
+        console.log(inputEvent)
+        if (inputEvent !== undefined) {
+            this.handleInput(inputEvent);
+        }
     }
     
     

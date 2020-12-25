@@ -1,18 +1,23 @@
 import React, { CSSProperties } from "react"
+import { Theme } from "../App"
 import colors from './constants'
 
-let headerStyle: CSSProperties = {
-    background: colors.blue,
-    width: "100%",
-    textAlign: "center",
-    fontFamily: "Concert One",
-    fontSize: "30px",
-    color: colors.white
+type propType = {
+    theme: Theme
 }
 
 
-class HeaderView extends React.Component<{},{}> {
+class HeaderView extends React.Component<propType,{}> {
     render() {
+        
+        let headerStyle: CSSProperties = {
+            background: this.props.theme.primary,
+            width: "100%",
+            textAlign: "center",
+            fontFamily: this.props.theme.headerFont,
+            fontSize: "30px",
+            color: this.props.theme.textColor
+        }
         return (
             <div style = {headerStyle}>
                 The Estimation Game

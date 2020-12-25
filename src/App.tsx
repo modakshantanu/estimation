@@ -13,12 +13,24 @@ type stateType = {
 	height: number
 }
 
-type Theme = {
+export type Theme = {
 	background: string,
 	primary: string,
 	secondary: string,
-	text: string,
-	
+	textColor: string,
+	questionFont: string, 
+	headerFont: string,
+	bodyFont: string
+}
+
+let theme: Theme = {
+	background: "#222831",
+	primary: "#30475e",
+	secondary: "#ffa41b",
+	textColor: "#eeeeee",
+	questionFont: "Roboto Mono",
+	headerFont: "Concert One",
+	bodyFont: "Noto Sans"
 }
 
 let config = {
@@ -29,9 +41,11 @@ let config = {
 }
 
 let appStyle: CSSProperties = {
-	background: colors.grey,
+	background: theme.background,
 	minHeight: "100vh",
-	color: colors.white
+	color: theme.textColor,
+	fontFamily: theme.bodyFont
+
 }
 
 class App extends React.Component<any,stateType> {
@@ -56,7 +70,7 @@ class App extends React.Component<any,stateType> {
   	render() {
     	return (
 			<div style = {appStyle}>
-				<HeaderView/>
+				<HeaderView theme = {theme}/>
 				<Container>
 					<Row>
 						<Col lg={2} md={1} xs = {0}>
@@ -64,7 +78,7 @@ class App extends React.Component<any,stateType> {
 						</Col>
 						<Col lg={8} md={10} xs = {12}>
 					
-							<CenterView config = {config} generator = {generator}></CenterView>
+							<CenterView config = {config} generator = {generator} theme = {theme}></CenterView>
 						</Col>
 						<Col lg ={2} md = {1} xs = {0} >
 						
