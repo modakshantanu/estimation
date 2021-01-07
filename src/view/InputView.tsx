@@ -10,32 +10,102 @@ type propType = {
     gameState: GameState
 }
 
-class InputView extends React.Component<propType, any>{
+
+
+class InputView extends React.Component<propType, {text: string}>{
     inputField: React.RefObject<HTMLInputElement>;
+    canvasRef: React.RefObject<HTMLCanvasElement>;
+    timerInterval?: NodeJS.Timeout;
+    questionId: number = 0;
+    timeLimit: number = 0;
+    startTime: number = 0;
+    
 
     constructor(props: any) {
         super(props);
         this.state = {
-            text: ""
+            text: "",
         }
 
-        this.handleChange = this.handleChange.bind(this);
-
         this.inputField = React.createRef();
+        this.canvasRef = React.createRef();
+        this.drawArc = this.drawArc.bind(this);
+        this.handleChange = this.handleChange.bind(this)
+
     }
 
+    drawArc(fraction: number) {
+        if (this.canvasRef.current === null) {
+            return
+        }
+
+        const canvas: any = this.canvasRef.current;
+        const context: any = this.canvasRef.current.getContext('2d');
+        context.strokeStyle = fraction < 0.75? 'green':'red'
+        
+        context.fillStyle = this.props.theme.background;
+        context.fillRect(0,0,48,48);
+        context.lineWidth = 3
+        context.translate(-0.5,-0.5);
+        let cx = canvas.width/2;
+        let cy = canvas.height/2;
+        context.beginPath();
+        context.arc(cx,cy, 16, 2* Math.PI * fraction - Math.PI /2, - Math.PI / 2);
+        context.stroke();
+
+        context.translate(0.5,0.5);
+
+        
+    }
+
+    componentDidMount(){
+        this.handleChange = this.handleChange.bind(this);
+        this.inputField.current?.focus();
+        
+    }
     render() {
         let inputStyle: CSSProperties = {
             background: this.props.theme.background,
-            color: this.props.theme.textColor
+            color: this.props.theme.textColor,
         }
+    
 
-        if (this.props.gameState.progressState === ProgressState.RUNNING) {
-            this.inputField.current?.focus();
-        }
         
         let progressState = this.props.gameState.progressState;
         
+        let curQuestion = this.props.gameState.currentQuestion;
+        if (curQuestion !== undefined && curQuestion.id !== this.questionId) {
+
+            this.timerInterval && clearInterval(this.timerInterval);
+            
+            
+            this.questionId = curQuestion.id;
+            this.timeLimit = curQuestion.timelimit;
+            this.startTime = Date.now();
+            if (this.timeLimit !== 0) {
+                
+                this.timerInterval = setInterval(() => {
+                    if (this.props.gameState.progressState === ProgressState.PAUSED) {
+                        this.startTime += 16.67; // instead of stopping the interval
+                    }
+                    let elapsed =  Date.now() - this.startTime ;
+                    let fraction = elapsed / this.timeLimit 
+                    
+                    if (fraction < 1) {
+                        this.drawArc(fraction);
+                    } else {
+                        this.timerInterval && clearInterval(this.timerInterval);
+                        this.props.inputHandler({type: InputType.ANSWER, payload: 1})
+                    }
+
+                }, 16.67);
+            }
+            this.forceUpdate();
+
+        }
+        let totalTime = curQuestion?.timelimit || 0;
+        let {gameState} = this.props;
+
         let placeholder = '';
         if (progressState === ProgressState.RUNNING) {
             placeholder = 'Enter Answer'
@@ -44,7 +114,7 @@ class InputView extends React.Component<propType, any>{
         }
 
         return (
-            <div>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
                 <InputGroup size="lg" style = {inputStyle}>
                     <FormControl onKeyDown = {this.handleKeyDown}
                         style = {inputStyle}
@@ -54,15 +124,19 @@ class InputView extends React.Component<propType, any>{
                         ref = {this.inputField}
                     />
                 </InputGroup>   
+                {totalTime !== 0 && gameState.progressState === ProgressState.RUNNING 
+                && <canvas ref = {this.canvasRef} width = {48} height = {48}/>}
             </div>
         )
     }
+
+
 
     handleChange(e: any) {
         if (this.props.gameState.progressState !== ProgressState.RUNNING) {
             return
         }
-        let inputText: String = e.target.value;
+        let inputText: string = e.target.value;
         let lastChar = inputText.slice(-1);
         if (inputText.length === 0 || (lastChar >= '0' && lastChar <= '9') || lastChar === 'e' || lastChar === '-' || lastChar === '+' || lastChar === '.') {
             this.setState({text: inputText});
@@ -82,6 +156,9 @@ class InputView extends React.Component<propType, any>{
             }
            this.props.inputHandler({type: InputType.ANSWER, payload: parsed})
            this.setState({text: ''})
+
+           if (this.props.gameState.currentIndex === this.props.gameState.numQuestions - 1) {
+           }
         } else if (e.key === 'Enter' && this.props.gameState.progressState === ProgressState.POSTGAME) {
             this.props.inputHandler({type: InputType.BUTTON, payload: 'replay'})
         }

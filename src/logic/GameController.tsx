@@ -16,53 +16,57 @@ export type Input = {
 
 
 
-export function nextState(state: GameState, input: Input): GameState {
+export function nextState(state: GameState, input: Input, callback: (input: Input) => void): GameState {
 
-    let nextState = state;
+    let next = state;
     if (state.progressState === ProgressState.PREGAME) {
         
         if (input.type === InputType.BUTTON) {
             if (input.payload === "start") {
-                nextState = initialState(state)
+                next = initialState(state)
 
-                nextState.progressState = ProgressState.RUNNING
+                next.progressState = ProgressState.RUNNING
             }
         }
     } else if (state.progressState === ProgressState.RUNNING) {
         if (input.type === InputType.BUTTON) {
             if (input.payload === "reset") {
-                nextState = initialState(state)
-                nextState.progressState = ProgressState.RUNNING
+                next = initialState(state)
+                next.progressState = ProgressState.RUNNING
             } else if (input.payload === 'playpause') {
-                nextState.progressState = ProgressState.PAUSED
+                next.progressState = ProgressState.PAUSED
             }
         } else if (input.type === InputType.ANSWER) {
             let score = state.currentQuestion?.scorer(input.payload)
-            state.totalScore += score || 0;
-            state.recentGuess = input.payload
-            state.recentAnswer = state.currentQuestion?.answer || -1;
-            state.recentScore = score || 0;
+            next.totalScore += score || 0;
+            next.recentGuess = input.payload
+            next.recentAnswer = state.currentQuestion?.answer || -1;
+            next.recentScore = score || 0;
 
-            state.currentIndex ++;
-            if (state.currentIndex < state.numQuestions) {
-                state.currentQuestion = state.questionArray[state.currentIndex];
+            next.currentIndex ++;
+            if (next.currentIndex < next.numQuestions) {
+                next.currentQuestion = next.questionArray[next.currentIndex];
+                next.totalTime = next.currentQuestion.timelimit
+                next.timeRemaining = next.totalTime
             } else {
-                state.progressState = ProgressState.POSTGAME;
+                next.progressState = ProgressState.POSTGAME;
             }
-
-        }
+        } 
     } else if (state.progressState === ProgressState.PAUSED) {
         if (input.type === InputType.BUTTON && input.payload === 'playpause') {
-            state.progressState = ProgressState.RUNNING
+            next.progressState = ProgressState.RUNNING
+        } else if (input.payload === "reset") {
+            next = initialState(state)
+            next.progressState = ProgressState.RUNNING
         }
     } else if (state.progressState === ProgressState.POSTGAME) {
         if (input.type === InputType.BUTTON && input.payload === 'replay') {
-            nextState = initialState(state)
-            nextState.progressState = ProgressState.RUNNING   
+            next = initialState(state)
+            next.progressState = ProgressState.RUNNING   
         }
     }
 
-    return nextState;
+    return next;
 }
 
 function initialState(state: GameState): GameState {
@@ -73,6 +77,8 @@ function initialState(state: GameState): GameState {
         state.questionArray.push(state.generator(state.generatorconfig));
     }
     state.currentQuestion = state.questionArray[0]
+    state.totalTime = state.currentQuestion.timelimit
+    state.timeRemaining = state.totalTime
     return state
 }
 

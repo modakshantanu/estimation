@@ -57,7 +57,7 @@ export function genMul(config : {
     });
 
     questionString = questionString.slice(0, -3);
-    return new Question(questionString, result, scorer);
+    return new Question(questionString, result, scorer,15000);
 }
 
 

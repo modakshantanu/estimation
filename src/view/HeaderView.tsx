@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react"
 import { Theme } from "../App"
-import colors from './constants'
+
 
 type propType = {
     theme: Theme

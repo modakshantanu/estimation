@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import { Theme } from '../App';
 import GameState, { ProgressState } from '../logic/GameState';
 import Question from '../logic/Question';

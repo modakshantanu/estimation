@@ -5,14 +5,16 @@ class Question {
     expression: String
     answer: number
     timelimit: number
+    id: number
     
     // Return a number between 0 and 1
     scorer: (arg0: number) => number
 
 
-    constructor(expression: String, answer: number, scorer = defaultScorer, timelimit = -1) {
+    constructor(expression: String, answer: number, scorer = defaultScorer, timelimit = 5000) {
         this.expression = expression
         this.answer = answer
+        this.id = Math.random();
         this.scorer = (guess: number) => scorer(guess, this.answer)
         this.timelimit = timelimit
     }

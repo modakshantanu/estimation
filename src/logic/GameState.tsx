@@ -1,4 +1,3 @@
-import { getNodeMajorVersion } from "typescript";
 import { genMul } from "./QGenerators";
 import Question from "./Question";
 
@@ -32,6 +31,8 @@ class GameState {
     recentAnswer: number = 0
     progressState: ProgressState = ProgressState.PREGAME
     generatorconfig: any = defaultConfig
+    totalTime = 0
+    timeRemaining = 0
 }
 
 export default GameState;

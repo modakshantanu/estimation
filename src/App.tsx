@@ -5,7 +5,6 @@ import { genMul } from './logic/QGenerators';
 import Question from './logic/Question';
 import CenterView from './view/CenterView';
 import HeaderView from './view/HeaderView';
-import colors from './view/constants'
 
 let generator: (arg0: any) => Question = genMul;
 type stateType = {

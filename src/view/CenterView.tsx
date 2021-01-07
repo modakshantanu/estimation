@@ -1,5 +1,4 @@
 import React from 'react';
-import { InputGroup } from 'react-bootstrap';
 import Question from '../logic/Question';
 import InputView from './InputView';
 import QuestionView from './QuestionView';
@@ -38,6 +37,7 @@ class CenterView extends React.Component<propType, stateType>{
         }
 
         
+        this.handleInput = this.handleInput.bind(this);   
 
     }
 
@@ -70,13 +70,7 @@ class CenterView extends React.Component<propType, stateType>{
 
     handleInput(input: Input) {
 
-        let curTime = Date.now()
-        if (curTime - this.prevTimestamp <= 1) {
-            return
-        }
-        this.prevTimestamp = curTime
-
-        let next = nextState(this.state.gameState, input);
+        let next = nextState(this.state.gameState, input, this.handleInput);
         this.setState({gameState: next})
     }
 

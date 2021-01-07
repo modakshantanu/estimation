@@ -1,6 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+import { Button } from 'react-bootstrap';
 import { Theme } from '../App';
 import { Input, InputType } from '../logic/GameController';
 import GameState, { ProgressState } from '../logic/GameState';
