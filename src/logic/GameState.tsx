@@ -15,7 +15,8 @@ let defaultConfig = {
 	numOperands : {low: 2, high: 2},
     rangeCenter: 20000,
     rangeVariance: 2,
-    operandVariance: 2
+    operandVariance: 2,
+    timeLimit: 0
 }
 
 class GameState {
@@ -32,7 +33,12 @@ class GameState {
     progressState: ProgressState = ProgressState.PREGAME
     generatorconfig: any = defaultConfig
     totalTime = 0
-    timeRemaining = 0
+    // constructor(category: string, generator: generatorType, numQuestions: number, config: any) {
+    //     this.category = category
+    //     this.generator = generator
+    //     this.numQuestions = numQuestions
+    //     this.generatorconfig = config
+    // }
 }
 
 export default GameState;

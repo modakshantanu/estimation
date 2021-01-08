@@ -47,7 +47,6 @@ export function nextState(state: GameState, input: Input, callback: (input: Inpu
             if (next.currentIndex < next.numQuestions) {
                 next.currentQuestion = next.questionArray[next.currentIndex];
                 next.totalTime = next.currentQuestion.timelimit
-                next.timeRemaining = next.totalTime
             } else {
                 next.progressState = ProgressState.POSTGAME;
             }
@@ -78,7 +77,6 @@ function initialState(state: GameState): GameState {
     }
     state.currentQuestion = state.questionArray[0]
     state.totalTime = state.currentQuestion.timelimit
-    state.timeRemaining = state.totalTime
     return state
 }
 

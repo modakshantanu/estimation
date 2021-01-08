@@ -11,7 +11,7 @@ class Question {
     scorer: (arg0: number) => number
 
 
-    constructor(expression: String, answer: number, scorer = defaultScorer, timelimit = 5000) {
+    constructor(expression: String, answer: number, scorer = defaultScorer, timelimit: number = 0) {
         this.expression = expression
         this.answer = answer
         this.id = Math.random();

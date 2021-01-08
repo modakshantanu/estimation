@@ -79,7 +79,23 @@ function format(num: number, max:number  = 1e6, min:number = 1e-3): string {
         return `${mantissa.toFixed(3)}×10${exponentStr}`
         
     }
-    return num.toString()
+    let tmp =  num.toString();
+
+    // Remove floating imprecision
+
+    let i = tmp.length - 1;
+    let decimal = 0;
+    while (i >= 0 && tmp[i] != '.') {
+        i--;
+        decimal++;
+    }
+    if (i >= 0 && decimal > 6) {
+        tmp = num.toFixed(6)
+    }
+    if (tmp.length > 8) {
+        tmp = tmp.substring(0,8);
+    }
+    return tmp
 }
 
 

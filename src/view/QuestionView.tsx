@@ -2,6 +2,8 @@ import React from 'react';
 import { Theme } from '../App';
 import GameState, { ProgressState } from '../logic/GameState';
 import Question from '../logic/Question';
+// @ts-ignore
+import { Textfit } from 'react-textfit';
 
 type propType = {
     question: Question | undefined,
@@ -20,7 +22,6 @@ let altFontStyle = {
     textAlign: "center" as const,
     minHeight: 100,
     padding: 15
-    
 }
 
 
@@ -32,6 +33,11 @@ class QuestionView extends React.Component<propType, any>{
     render() {
 
         let progressState = this.props.gameState.progressState;
+
+        let text = this.props.question?.expression || '---';
+
+        
+
 
         if (progressState === ProgressState.PAUSED) {
             return (
@@ -48,9 +54,9 @@ class QuestionView extends React.Component<propType, any>{
         }
 
         return (
-            <div style = {{...mainFontStyle, fontFamily: this.props.theme.questionFont}}>
+            <Textfit max={mainFontStyle.fontSize} mode = {'single'} style = {{...mainFontStyle, fontFamily: this.props.theme.questionFont}}>
                 {this.props.question?.expression || "---"}
-            </div>
+            </Textfit>
         )
     }
 }

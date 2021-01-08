@@ -7,7 +7,8 @@ import GameState, { ProgressState } from '../logic/GameState';
 type propType = { 
     theme: Theme,
     gameState: GameState,
-    inputHandler: (arg0: Input) => void
+    inputHandler: (arg0: Input) => void,
+    width: number
 }
 
 
@@ -19,6 +20,8 @@ class GameInfoView extends React.Component<propType, any>{
             fontSize: "24px",
             marginTop: "12px",
         }
+
+        if (this.props.width < 400) style.fontSize = "20px"
 
         let progressString = `(${gameState.currentIndex + 1}/${gameState.numQuestions})`
         let startButton = <Button 

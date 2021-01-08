@@ -12,9 +12,8 @@ import {nextState } from '../logic/GameController'
 import { decodeInput } from '../logic/KeyDecoder';
 
 type propType = {
-    generator: (arg: object) => Question,
-    config: object,
-    theme: Theme
+    theme: Theme,
+    width: number
 }
 
 type stateType = {
@@ -55,10 +54,11 @@ class CenterView extends React.Component<propType, stateType>{
 
     render() {
         let gameState = this.state.gameState;
+        
         return (
             <div>
                 
-                <GameInfoView theme = {this.props.theme} gameState={gameState} inputHandler = {this.handleInput}/> 
+                <GameInfoView theme = {this.props.theme} gameState={gameState} inputHandler = {this.handleInput} width = {this.props.width}/> 
                 <QuestionView question = {gameState.currentQuestion} theme ={this.props.theme} gameState={gameState}/>
                 <InputView inputHandler = {this.handleInput} theme = {this.props.theme} gameState={gameState}></InputView>
                 <ScoreView recentScore = {gameState.recentScore} totalScore = {gameState.totalScore}
@@ -66,6 +66,10 @@ class CenterView extends React.Component<propType, stateType>{
                 <ButtonRow inputHandler = {this.handleInput} gameState={gameState}/>
             </div>
         )
+    }
+
+    parentUpdate(gameState: GameState) {
+        this.setState({gameState})
     }
 
     handleInput(input: Input) {
