@@ -4,6 +4,7 @@ import GameState, { ProgressState } from '../logic/GameState';
 import Question from '../logic/Question';
 // @ts-ignore
 import { Textfit } from 'react-textfit';
+import TextView from '../questionViews/TextView';
 
 type propType = {
     question: Question | undefined,
@@ -34,7 +35,7 @@ class QuestionView extends React.Component<propType, any>{
 
         let progressState = this.props.gameState.progressState;
 
-        let text = this.props.question?.expression || '---';
+        
 
         
 
@@ -53,11 +54,10 @@ class QuestionView extends React.Component<propType, any>{
             )
         }
 
-        return (
-            <Textfit max={mainFontStyle.fontSize} mode = {'single'} style = {{...mainFontStyle, fontFamily: this.props.theme.questionFont}}>
-                {this.props.question?.expression || "---"}
-            </Textfit>
-        )
+        if (this.props.question) {
+            return this.props.question?.view
+        } 
+        return <TextView text= '---'/>
     }
 }
 

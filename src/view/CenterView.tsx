@@ -56,7 +56,7 @@ class CenterView extends React.Component<propType, stateType>{
         let gameState = this.state.gameState;
         
         return (
-            <div>
+            <div id='centerview'>
                 
                 <GameInfoView theme = {this.props.theme} gameState={gameState} inputHandler = {this.handleInput} width = {this.props.width}/> 
                 <QuestionView question = {gameState.currentQuestion} theme ={this.props.theme} gameState={gameState}/>

@@ -1,3 +1,7 @@
+import React from "react";
+import { Theme } from "../App";
+import AngleView from "../questionViews/AngleView";
+import TextView from "../questionViews/TextView";
 import Question from "./Question";
 
 type Range = {
@@ -56,7 +60,7 @@ export function genMul(config : {
         questionString += `${element} × `;
     });
     questionString = questionString.slice(0, -3);
-    return new Question(questionString, result, scorer, timeLimit);
+    return new Question( <TextView text = {questionString}/>, result, scorer, timeLimit);
 }
 
 export function genPerc(
@@ -93,10 +97,36 @@ export function genPerc(
     }
 
 
-    return new Question(questionString, result, scorer, timeLimit);
+    return new Question(<TextView text = {questionString}/>, result, scorer, timeLimit);
 
 
     
+
+}
+
+
+export function genAngle (
+    config: {
+        minDeg: number,
+        maxDeg: number,
+        timeLimit: number
+    }
+) : Question {
+
+    let {minDeg, maxDeg, timeLimit} = config
+    let result = rngInt(minDeg, maxDeg);
+
+    let resultRad = result * Math.PI / 180
+
+    let scorer = (guess: number, actual: number) : number => {
+
+        let fraction = 1 - Math.abs(guess - actual) * 0.05
+        if (fraction < 0) fraction = 0;
+        return Math.round(fraction * 100)
+    }
+
+
+    return new Question(<AngleView angle={resultRad}/>, result, scorer, timeLimit)
 
 }
 

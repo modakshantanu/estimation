@@ -2,7 +2,7 @@
 
 class Question {
     
-    expression: String
+    view: any
     answer: number
     timelimit: number
     id: number
@@ -10,9 +10,8 @@ class Question {
     // Return a number between 0 and 1
     scorer: (arg0: number) => number
 
-
-    constructor(expression: String, answer: number, scorer = defaultScorer, timelimit: number = 0) {
-        this.expression = expression
+    constructor(view: any, answer: number, scorer = defaultScorer, timelimit: number = 0) {
+        this.view = view
         this.answer = answer
         this.id = Math.random();
         this.scorer = (guess: number) => scorer(guess, this.answer)

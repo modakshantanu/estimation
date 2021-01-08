@@ -1,4 +1,4 @@
-import { genMul, genPerc } from "./QGenerators";
+import { genAngle, genMul, genPerc } from "./QGenerators";
 
 let modes: any = [
     {
@@ -67,6 +67,33 @@ let modes: any = [
             }
         ],
         times: [0, 10000, 30000]
+    },
+
+    {
+        category: 'Angles',
+        numQuestions: 5,
+        generator: genAngle,
+
+        levels: [
+            {
+                name: 'Acute Only',
+                config: {
+                    minDeg: 1,
+                    maxDeg: 89,
+                    timeLimit: 0,
+            
+                }
+            },
+            {
+                name: 'Any',
+                config: {
+                    minDeg: 1,
+                    maxDeg: 359,
+                    timeLimit: 0,
+                }
+            }
+        ],
+        times: [0, 7000, 20000]
     }
 ]
 

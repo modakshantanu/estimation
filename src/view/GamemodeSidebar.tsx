@@ -32,7 +32,6 @@ class GamemodeSidebar extends React.Component<propType,stateType> {
         this.changeLevel = this.changeLevel.bind(this);
         this.updateParent = this.updateParent.bind(this);
 
-        console.log('Constructed');
     }
     
 
