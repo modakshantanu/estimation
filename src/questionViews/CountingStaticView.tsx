@@ -5,7 +5,7 @@ type stateType = {
     remUpdates: number
 }
 
-type propType = {num: number, shape: string}
+type propType = {num: number, shape: string, width?: number}
 
 function rngInt(low: number, high: number) : number {
     return low + Math.floor(Math.random() * (high - low + 0.99999));
@@ -33,7 +33,7 @@ class CountingStaticView extends React.Component<propType, stateType> {
         let {num} = this.props
         let gridsize = num < 100 ? 32 : 50
         
-        this.width = document.getElementById('centerview')?.clientWidth || 300;
+        this.width = this.props.width || document.getElementById('centerview')?.clientWidth || 300;
         this.height = this.width;
         let cellsize = this.width / gridsize;
         
@@ -98,7 +98,7 @@ class CountingStaticView extends React.Component<propType, stateType> {
         x += cellsize / 2
         y += cellsize / 2
 
-        if (x < 0 || x > h || y < 0 || y > h) console.log('err')
+        
 
         ctx.beginPath()
         ctx.arc(x,y,cellsize / 2 * 0.9, 0, 2* Math.PI)
@@ -118,7 +118,7 @@ class CountingStaticView extends React.Component<propType, stateType> {
         x += cellsize / 2
         y += cellsize / 2
 
-        if (x < 0 || x > h || y < 0 || y > h) console.log('err')
+        
 
         ctx.beginPath()
         ctx.fillRect(x,y,cellsize, cellsize)

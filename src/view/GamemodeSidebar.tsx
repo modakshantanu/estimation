@@ -31,7 +31,7 @@ class GamemodeSidebar extends React.Component<propType,stateType> {
         this.changeTimeLimit = this.changeTimeLimit.bind(this);
         this.changeLevel = this.changeLevel.bind(this);
         this.updateParent = this.updateParent.bind(this);
-
+        this.handleUpdate = this.handleUpdate.bind(this)
     }
     
 
@@ -185,6 +185,18 @@ class GamemodeSidebar extends React.Component<propType,stateType> {
         this.props.updateHandler(category, numQ, generator, config)
     }
 
+    handleUpdate(outer: string) {
+        let outerObj: any = {};
+        for (let i = 0; i < modes.length; i++) {
+            if (`${modes[i].category} (${modes[i].levels[0].name})` === outer) {
+                outerObj = modes[i];
+            }
+        }
+        outer = outerObj.category
+        let level = outerObj.levels[0].name;
+        let timeLimit = outerObj.times[0]
+        this.setState({outer, level, timeLimit}) 
+    }
     
 }
 

@@ -8,6 +8,11 @@ import GamemodeSidebar from './view/GamemodeSidebar';
 import HeaderView from './view/HeaderView';
 import modes from './logic/GameModes'
 import GameState from './logic/GameState';
+import WelcomePage from './view/WelcomePage';
+import TextView from './questionViews/TextView';
+import AngleView from './questionViews/AngleView';
+import CountingStaticView from './questionViews/CountingStaticView';
+import { Recoverable } from 'repl';
 
 let generator: (arg0: any) => Question = genMul;
 type stateType = {
@@ -15,6 +20,7 @@ type stateType = {
 	height: number,
 	leftBar: boolean,
 	rightBar: boolean,
+	welcomePage: boolean
 }
 
 export type Theme = {
@@ -37,14 +43,6 @@ let theme: Theme = {
 	bodyFont: "Noto Sans"
 }
 
-let config = {
-	numOperands : {low: 2, high: 2},
-    rangeCenter: 20000,
-    rangeVariance: 2,
-	operandVariance: 2,
-	timeLimit: 10000
-}
-
 let appStyle: CSSProperties = {
 	background: theme.background,
 	minHeight: "100vh",
@@ -52,9 +50,22 @@ let appStyle: CSSProperties = {
 	fontFamily: theme.bodyFont
 }
 
+
+let previewQuestions: any = [
+	<TextView text = {'12 * 34'}/>,
+	<TextView text = {'60% * 35% * 12%'}/>,
+	<AngleView angle = {Math.PI / 3}/>,
+	<CountingStaticView num = {25} shape = {'circle'}/>
+]
+
+let categories = ['Multiplication' , 'Percentages', 'Angles' , 'Counting']
+
+
+
 class App extends React.Component<any,stateType> {
 
 	centerRef: React.RefObject<CenterView>
+	sidebarRef: React.RefObject<GamemodeSidebar>
 
 	constructor(props: any) {
 		super(props)
@@ -63,7 +74,8 @@ class App extends React.Component<any,stateType> {
 			width: window.innerWidth,
 			height: window.innerHeight,
 			rightBar: false,
-			leftBar: false
+			leftBar: false,
+			welcomePage: true
 		}
 		window.addEventListener('resize', (ev: any)=> {
 			this.setState({
@@ -73,21 +85,30 @@ class App extends React.Component<any,stateType> {
 		})
 		this.sidebarHandler = this.sidebarHandler.bind(this)
 		this.centerRef = React.createRef()
+		this.sidebarRef = React.createRef()
 		this.updateGamemode = this.updateGamemode.bind(this)
 	}
 
-  	render() {
+	
+	
+	render() {
     	return (
 			<div style = {appStyle}>
 				<HeaderView theme = {theme} sidebarHandler = {this.sidebarHandler} width = {this.state.width} />
+				{this.state.welcomePage && <div style={{right: 5, position: 'fixed'}}> View all modes ↑ </div>}
+				{this.state.welcomePage && <div style={{left: 5, position: 'fixed'}}> ↑ Settings </div>}
+				{this.state.welcomePage && <br/>}
 				<Container>
 					<Row>
 						<Col lg={2} md={1} xs = {0}>
 					
 						</Col>
 						<Col lg={8} md={10} xs = {12}>
-					
-							<CenterView theme = {theme} ref = {this.centerRef} width = {this.state.width}></CenterView>
+							{this.state.welcomePage? 
+								<WelcomePage theme = {theme} updateHandler = {this.updateGamemode}/> : 
+								<CenterView theme = {theme} ref = {this.centerRef} width = {this.state.width}></CenterView>
+							}
+
 						</Col>
 						<Col lg ={2} md = {1} xs = {0} >
 						
@@ -95,7 +116,7 @@ class App extends React.Component<any,stateType> {
 						</Row>
 				</Container>
 
-				 <GamemodeSidebar theme = {theme} updateHandler = {this.updateGamemode} visible = {this.state.rightBar} />
+				 <GamemodeSidebar ref = {this.sidebarRef} theme = {theme} updateHandler = {this.updateGamemode} visible = {this.state.rightBar} />
 			</div>
 
 		);
@@ -117,7 +138,16 @@ class App extends React.Component<any,stateType> {
 	}
 
 
-	updateGamemode(category: string, numQ: number, generator: any, config: any) {
+	updateGamemode(category: string, numQ: number, generator: any, config: any, fromWelcomePage = false) {
+		if (this.state.welcomePage) {
+			this.setState({welcomePage: false}, 
+			() => {
+				if (fromWelcomePage) {
+					this.sidebarRef.current?.handleUpdate(category)
+				}	
+				this.updateGamemode(category, numQ, generator, config)
+			})
+		} 
 		let gameState = new GameState();
 		gameState.category = category;
 		gameState.numQuestions = numQ;

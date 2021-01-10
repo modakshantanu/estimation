@@ -2,13 +2,15 @@ import React from "react";
 import { Theme } from "../App";
 
 type stateType = {
-    remUpdates: number
+    remUpdates: number,
+
 }
 
 type propType = {angle: number}
 
 class AngleView extends React.Component<propType, stateType> {
     
+
     canvasRef: React.RefObject<HTMLCanvasElement>
     width: number = 300
     height: number = 300

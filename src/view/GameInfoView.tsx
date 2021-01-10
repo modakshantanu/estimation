@@ -21,16 +21,22 @@ class GameInfoView extends React.Component<propType, any>{
             marginTop: "12px",
         }
 
-        if (this.props.width < 400) style.fontSize = "20px"
+        let smallui = (this.props.width < 450)
+        
+        if (smallui) {
+            style.fontSize = "18px"
+        }
 
         let progressString = `(${gameState.currentIndex + 1}/${gameState.numQuestions})`
         let startButton = <Button 
+            size = {smallui? 'sm': undefined}
             variant = "success" 
             style = {{float: "right", fontFamily : theme.bodyFont}}
             onClick = {() => {inputHandler({type: InputType.BUTTON, payload: 'start'})}
         }>Start↵</Button>
         
         let replayButton = <Button 
+            size = {smallui? 'sm': undefined}
             variant = "success" 
             style = {{float: "right", fontFamily : theme.bodyFont}}
             onClick = {() => {inputHandler({type: InputType.BUTTON, payload: 'replay'})}
@@ -42,7 +48,7 @@ class GameInfoView extends React.Component<propType, any>{
             <div style = {style}>
 
                 <span>{gameState.category}</span>
-                
+    
                 {gameState.progressState === ProgressState.PREGAME ? 
                     startButton :
                 gameState.progressState === ProgressState.POSTGAME ?
