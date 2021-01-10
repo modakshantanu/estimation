@@ -31,11 +31,12 @@ class CountingStaticView extends React.Component<propType, stateType> {
     render() {
 
         let {num} = this.props
-        let gridsize = num < 100 ? 32 : 50
+        let gridW = num < 100 ? 50 : 80
+        let gridH = num < 100 ? 20 : 32
         
         this.width = this.props.width || document.getElementById('centerview')?.clientWidth || 300;
-        this.height = this.width;
-        let cellsize = this.width / gridsize;
+        this.height = this.width * 0.40;
+
         
         let ctx = this.canvasRef.current?.getContext('2d')
         if (ctx) {
@@ -44,9 +45,9 @@ class CountingStaticView extends React.Component<propType, stateType> {
             ctx.fillRect(0,0,this.width, this.height)
 
             ctx.fillStyle = '#eeeeee'
-            let filled: boolean[][] = new Array(gridsize)
+            let filled: boolean[][] = new Array(gridH)
                 .fill(false)
-                .map(() => new Array(gridsize)
+                .map(() => new Array(gridW)
                 .fill(false));
 
             
@@ -55,13 +56,13 @@ class CountingStaticView extends React.Component<propType, stateType> {
             let drawFunction = this.props.shape === 'square'? this.drawSquare : this.drawCircle
             while (cnt < this.props.num) {
 
-                let r = rngInt(0, gridsize - 1)
-                let c = rngInt(0, gridsize - 1)
+                let r = rngInt(0, gridH - 1)
+                let c = rngInt(0, gridW - 1)
                 if (filled[r][c]) continue
 
                 filled[r][c] = true
 
-                drawFunction(ctx, gridsize, r, c, this.width, this.height)
+                drawFunction(ctx, gridW, gridH, r, c, this.width, this.height)
 
                 cnt++
             }
@@ -84,16 +85,14 @@ class CountingStaticView extends React.Component<propType, stateType> {
         setTimeout(this.update, 16.67);
     }
 
-    drawCircle(ctx: CanvasRenderingContext2D , gridsize: number, r: number, c: number, w: number, h: number) {
+    drawCircle(ctx: CanvasRenderingContext2D , gridW: number, gridH: number, r: number, c: number, w: number, h: number) {
        
         
 
-        let cellsize = w / (gridsize + 1)
+        let cellsize = w / (gridW + 1)
         
         let x = c * cellsize
         let y = r * cellsize
-        x += cellsize * (gridsize - r - 1) / gridsize;
-        y += cellsize * (c) / gridsize
 
         x += cellsize / 2
         y += cellsize / 2

@@ -28,8 +28,10 @@ class AngleView extends React.Component<propType, stateType> {
 
        
         this.width = document.getElementById('centerview')?.clientWidth || 300;
-        this.height = this.width;
+        this.height = this.width * 0.45;
         let ctx = this.canvasRef.current?.getContext('2d')
+        let cx = this.width / 2
+        let cy = this.props.angle < Math.PI ? this.height * 0.9 : this.height * 0.2
         if (ctx) {
 
             ctx.fillStyle = '#222831'
@@ -38,21 +40,21 @@ class AngleView extends React.Component<propType, stateType> {
             ctx.strokeStyle = '#eeeeee'
             ctx.lineWidth = this.width /150
             ctx.beginPath()
-            let radius = this.width * 0.4
+            let radius = this.width * 0.35
             let innerRad = radius * 0.2
-            ctx.moveTo(this.width/2, this.height/2)
-            ctx.lineTo(this.width / 2 + radius, this.height / 2)
-            ctx.moveTo(this.width / 2, this.height / 2);
+            ctx.moveTo(cx,cy)
+            ctx.lineTo(cx + radius, cy)
+            ctx.moveTo(cx,cy);
 
             let x = radius * Math.cos(this.props.angle)
             let y = radius * Math.sin(this.props.angle)
 
-            ctx.lineTo(this.width / 2 + x , this.height / 2 - y)
+            ctx.lineTo(cx + x , cy - y)
 
 
-            ctx.moveTo(this.width/2, this.height/2)
+            ctx.moveTo(cx,cy)
             
-            ctx.arc(this.width/2, this.height/2, innerRad, -this.props.angle , 0)
+            ctx.arc(cx,cy, innerRad, -this.props.angle , 0)
 
             ctx.stroke()
         }

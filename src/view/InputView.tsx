@@ -123,8 +123,9 @@ class InputView extends React.Component<propType, {text: string}>{
                         onChange = {this.handleChange}
                         placeholder={placeholder }
                         ref = {this.inputField}
+                        autoComplete = {'chrome-off'}
                     />
-                </InputGroup>   
+                </InputGroup>  
                 {totalTime !== 0 && gameState.progressState === ProgressState.RUNNING 
                 && <canvas ref = {this.canvasRef} width = {48} height = {48}/>}
             </div>
