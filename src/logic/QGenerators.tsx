@@ -1,6 +1,7 @@
 import React from "react";
 import { Theme } from "../App";
 import AngleView from "../questionViews/AngleView";
+import CountingStaticView from "../questionViews/CountingStaticView";
 import TextView from "../questionViews/TextView";
 import Question from "./Question";
 
@@ -127,6 +128,34 @@ export function genAngle (
 
 
     return new Question(<AngleView angle={resultRad}/>, result, scorer, timeLimit)
+
+}
+
+export function genCounting (
+    config: {
+        min: number,
+        max: number,
+        timeLimit: number
+    }
+) : Question {
+
+    let {min, max, timeLimit} = config;
+    let result = rngInt(min, max)
+
+    let scorer = (guess: number, actual: number) : number => {
+
+        if (guess === actual) {
+            return 100
+        }
+
+        let fraction = guess < actual ? (guess / actual) : (actual / guess)
+        return Math.round(fraction * 90)
+    }
+
+    let shape = 'circle'
+
+    return new Question(<CountingStaticView num={result} shape = {shape}/>, result, scorer, timeLimit)
+
 
 }
 

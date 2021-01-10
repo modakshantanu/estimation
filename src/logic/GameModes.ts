@@ -1,4 +1,4 @@
-import { genAngle, genMul, genPerc } from "./QGenerators";
+import { genAngle, genCounting, genMul, genPerc } from "./QGenerators";
 
 let modes: any = [
     {
@@ -89,6 +89,39 @@ let modes: any = [
                 config: {
                     minDeg: 1,
                     maxDeg: 359,
+                    timeLimit: 0,
+                }
+            }
+        ],
+        times: [0, 7000, 20000]
+    },
+    {
+        category: 'Counting (Static)',
+        numQuestions: 5,
+        generator: genCounting,
+
+        levels: [
+            {
+                name: '20 - 50',
+                config: {
+                    min: 20,
+                    max: 50,
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: '50 - 100',
+                config: {
+                    min: 50,
+                    max: 100,
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: '100 - 500',
+                config: {
+                    min: 100,
+                    max: 500,
                     timeLimit: 0,
                 }
             }

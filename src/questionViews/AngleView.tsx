@@ -19,18 +19,12 @@ class AngleView extends React.Component<propType, stateType> {
         }
         this.canvasRef = React.createRef();
         this.update = this.update.bind(this);
-        window.addEventListener('resize', (ev: any)=> {
-			this.setState({
-				remUpdates: 1
-			})
-		})
     }
     
 
-
     render() {
 
-        ('render canvas')
+       
         this.width = document.getElementById('centerview')?.clientWidth || 300;
         this.height = this.width;
         let ctx = this.canvasRef.current?.getContext('2d')
@@ -67,6 +61,8 @@ class AngleView extends React.Component<propType, stateType> {
 
         return <canvas width = {this.width} height = {this.height} ref = {this.canvasRef}/>
     }
+
+
 
     update() {
         if (this.state.remUpdates <= 0) {
