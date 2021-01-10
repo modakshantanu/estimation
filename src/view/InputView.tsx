@@ -95,7 +95,8 @@ class InputView extends React.Component<propType, {text: string}>{
                         this.drawArc(fraction);
                     } else {
                         this.timerInterval && clearInterval(this.timerInterval);
-                        this.props.inputHandler({type: InputType.ANSWER, payload: 1})
+                        this.props.inputHandler({type: InputType.ANSWER, payload: this.toValidAnswer(this.state.text) })
+                        this.setState({text: ''})
                     }
 
                 }, 16.67);
@@ -130,7 +131,18 @@ class InputView extends React.Component<propType, {text: string}>{
         )
     }
 
-
+    toValidAnswer(text: string): number{
+        let parsed: number
+        try {
+            parsed = parseFloat(text);
+        } catch (error) {
+            return 1
+        }
+        if (isNaN(parsed)) {
+            return 1
+        }
+        return parsed
+    }
 
     handleChange(e: any) {
         if (this.props.gameState.progressState !== ProgressState.RUNNING) {
