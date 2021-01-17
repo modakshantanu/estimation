@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+  import React, { CSSProperties } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
  

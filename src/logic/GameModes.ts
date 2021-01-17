@@ -1,4 +1,4 @@
-import { genAngle, genCounting, genMul, genPerc } from "./QGenerators";
+import { genAngle, genArea, genCounting, genLength, genMul, genPerc } from "./QGenerators";
 
 let modes: any = [
     {
@@ -127,7 +127,74 @@ let modes: any = [
             }
         ],
         times: [0, 7000, 20000]
-    }
+    },
+    {
+        category: 'Length',
+        numQuestions: 5,
+        generator: genLength,
+
+        levels: [
+
+            {
+                name: 'Parallel Lines',
+                config: {
+                    center: 3,
+                    variance: 3,
+                    shape: 'parallel',
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: 'Lines',
+                config: {
+                    center: 3,
+                    variance: 3,
+                    shape: 'singlelines',
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: 'Paths',
+                config: {
+                    center: 16,
+                    variance: 1,
+                    shape: 'path',
+                    timeLimit: 0,
+                }
+            }
+        ],
+        times: [0, 7000, 20000]
+    },
+
+    {
+        category: 'Area',
+        numQuestions: 5,
+        generator: genArea,
+
+        levels: [
+
+            {
+                name: 'Circles',
+                config: {
+                    center: 3,
+                    variance: 5,
+                    shape: 'circle',
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: 'Polygons',
+                config: {
+                    center: 3,
+                    variance: 4,
+                    shape: 'polygon',
+                    timeLimit: 0,
+                }
+            },
+        ],
+        times: [0, 7000, 20000]
+    },
+    
 ]
 
 export default modes;

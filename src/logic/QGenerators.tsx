@@ -1,7 +1,9 @@
 import React from "react";
 import { Theme } from "../App";
 import AngleView from "../questionViews/AngleView";
+import AreaView from "../questionViews/AreaView";
 import CountingStaticView from "../questionViews/CountingStaticView";
+import LengthView from "../questionViews/LengthView";
 import TextView from "../questionViews/TextView";
 import Question from "./Question";
 
@@ -155,6 +157,45 @@ export function genCounting (
     let shape = 'circle'
 
     return new Question(<CountingStaticView num={result} shape = {shape}/>, result, scorer, timeLimit)
+}
+
+export function genArea (
+    config: {
+        center: number,
+        variance: number,
+        shape: string,
+        timeLimit: number
+    }
+) : Question {
+
+    let {center, variance, shape, timeLimit} = config;
+    let result = logRng(center, variance)
+    let scorer = (guess: number, actual: number) : number => {
+        let fraction = guess < actual ? (guess / actual) : (actual / guess)
+        fraction = Math.sqrt(fraction)
+        return Math.round(fraction * 100)
+    }
+    return new Question(<AreaView ratio = {result} shape={shape}/>, result, scorer, timeLimit)
+
+
+}
+
+export function genLength (
+    config: {
+        center: number,
+        variance: number,
+        shape: string,
+        timeLimit: number
+    }
+) : Question {
+
+    let {center, variance, shape, timeLimit} = config;
+    let result = logRng(center, variance)
+    let scorer = (guess: number, actual: number) : number => {
+        let fraction = guess < actual ? (guess / actual) : (actual / guess)
+        return Math.round(fraction * 100)
+    }
+    return new Question(<LengthView ratio = {result} shape={shape}/>, result, scorer, timeLimit)
 
 
 }
