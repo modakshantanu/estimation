@@ -33,6 +33,7 @@ class GameState {
     progressState: ProgressState = ProgressState.PREGAME
     generatorconfig: any = defaultConfig
     totalTime = 0
+    storageKey = 'Multiplication (Easy)|0'
     // constructor(category: string, generator: generatorType, numQuestions: number, config: any) {
     //     this.category = category
     //     this.generator = generator

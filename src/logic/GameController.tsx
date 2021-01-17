@@ -1,6 +1,6 @@
 
 import GameState , {ProgressState} from "./GameState";
-
+let ls = require('local-storage')
 
 export enum InputType {
     BUTTON,
@@ -48,6 +48,16 @@ export function nextState(state: GameState, input: Input, callback: (input: Inpu
                 next.currentQuestion = next.questionArray[next.currentIndex];
                 next.totalTime = next.currentQuestion.timelimit
             } else {
+
+                // Update Highscore
+                let scores = ls('highscores')
+                if (!scores) {
+                    ls('highscores', {})
+                    scores = {} 
+                }
+                scores[next.storageKey] = Math.max(next.totalScore , (scores[next.storageKey] || 0))
+                ls('highscores' , scores)
+
                 next.progressState = ProgressState.POSTGAME;
             }
         } 

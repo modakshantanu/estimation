@@ -1,19 +1,17 @@
   import React, { CSSProperties } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-
+import GameState, { ProgressState } from "../logic/GameState";
+var ls = require('local-storage')
  
 type propType = {
-    recentScore: number,
-    totalScore: number,
-    recentGuess: number,
-    recentAnswer: number
+    gameState: GameState
 }
 
 class ScoreView extends React.Component<propType, {}> {
 
     render() {
 
-        let {recentGuess , recentAnswer} = this.props
+        let {recentGuess , recentAnswer, totalScore, recentScore} = this.props.gameState
 
         let errorString = '';
         let relError = Math.abs(Math.log10(recentAnswer) - Math.log10(recentGuess))
@@ -35,19 +33,41 @@ class ScoreView extends React.Component<propType, {}> {
 
         let isTinyScreen = window.innerWidth < 576
         let errorStyle: CSSProperties = isTinyScreen ? {} : {float: "right"}
+
+        let textStyle: CSSProperties = {
+            fontSize: (isTinyScreen ? '16px' : '19px')
+        }
+
         
+        let highscores = ls('highscores') 
+        if (highscores === null) {
+            ls('highscores', {})
+            highscores = {}
+        }
+
+        let highscore = highscores[this.props.gameState.storageKey] || 0
+
+
+
+
         return (
             <div>
                 <Container>
                     <Row>
                         <Col xs = {12} sm = {4}>
-                            <span >{`Score: ${this.props.totalScore} `}</span>
-                            <span>{`(+${this.props.recentScore})`}</span>
+                            <div>
+                                <span style = {textStyle}>{`Score: ${totalScore} `}</span>
+                                <span style = {textStyle}>{`(+${recentScore})`}</span>
+                            </div>
+                            
+                            <div style = {textStyle}>{`Highscore: ${highscore}`}</div>
+                            
+                            
                         </Col>
                         <Col xs = {12} sm = {8}>
                             <div style = {errorStyle}>
-                                <div>{`Guess: ${format(recentGuess)}, Answer: ${format(recentAnswer)}`}</div>
-                                <div>{errorString}</div>
+                                <div style = {textStyle}>{`Guess: ${format(recentGuess)}, Answer: ${format(recentAnswer)}`}</div>
+                                <div style = {textStyle}>{errorString}</div>
                             </div>
                         </Col>
 

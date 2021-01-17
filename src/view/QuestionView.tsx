@@ -35,11 +35,6 @@ class QuestionView extends React.Component<propType, any>{
 
         let progressState = this.props.gameState.progressState;
 
-        
-
-        
-
-
         if (progressState === ProgressState.PAUSED) {
             return (
                 <div style = {{...mainFontStyle, fontFamily: this.props.theme.questionFont}}>

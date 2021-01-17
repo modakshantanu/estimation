@@ -61,8 +61,7 @@ class CenterView extends React.Component<propType, stateType>{
                 <GameInfoView theme = {this.props.theme} gameState={gameState} inputHandler = {this.handleInput} width = {this.props.width}/> 
                 <QuestionView question = {gameState.currentQuestion} theme ={this.props.theme} gameState={gameState}/>
                 <InputView inputHandler = {this.handleInput} theme = {this.props.theme} gameState={gameState}></InputView>
-                <ScoreView recentScore = {gameState.recentScore} totalScore = {gameState.totalScore}
-                        recentGuess = {gameState.recentGuess} recentAnswer = {gameState.recentAnswer}/>
+                <ScoreView gameState = {gameState}/>
                 <ButtonRow inputHandler = {this.handleInput} gameState={gameState}/>
             </div>
         )

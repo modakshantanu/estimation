@@ -13,6 +13,8 @@ import TextView from './questionViews/TextView';
 import AngleView from './questionViews/AngleView';
 import CountingStaticView from './questionViews/CountingStaticView';
 import { Recoverable } from 'repl';
+import SettingsSidebar from './view/SettingsSidebar';
+var ls = require('local-storage')
 
 let generator: (arg0: any) => Question = genMul;
 type stateType = {
@@ -87,6 +89,10 @@ class App extends React.Component<any,stateType> {
 		this.centerRef = React.createRef()
 		this.sidebarRef = React.createRef()
 		this.updateGamemode = this.updateGamemode.bind(this)
+
+		if (ls('highscore') == null) {
+			ls('highscore' , {})
+		}
 	}
 
 	
@@ -98,6 +104,7 @@ class App extends React.Component<any,stateType> {
 				{this.state.welcomePage && <div style={{right: 5, position: 'fixed'}}> View all modes ↑ </div>}
 				{this.state.welcomePage && <div style={{left: 5, position: 'fixed'}}> ↑ Settings </div>}
 				{this.state.welcomePage && <br/>}
+				<SettingsSidebar theme = {theme} visible = {this.state.leftBar} />
 				<Container>
 					<Row>
 						<Col lg={2} md={1} xs = {0}>
@@ -117,6 +124,7 @@ class App extends React.Component<any,stateType> {
 				</Container>
 
 				 <GamemodeSidebar ref = {this.sidebarRef} theme = {theme} updateHandler = {this.updateGamemode} visible = {this.state.rightBar} />
+
 			</div>
 
 		);
@@ -130,10 +138,10 @@ class App extends React.Component<any,stateType> {
 				leftBar: false
 			}))
 		} else if (side === 'left') {
-			this.setState({
-				leftBar: true,
+			this.setState(({leftBar}) => ({
+				leftBar: !leftBar,
 				rightBar: false
-			})
+			}))
 		}
 	}
 
@@ -153,6 +161,7 @@ class App extends React.Component<any,stateType> {
 		gameState.numQuestions = numQ;
 		gameState.generator = generator;
 		gameState.generatorconfig =config;
+		gameState.storageKey = `${category}|${config.timeLimit}`
 		this.centerRef.current?.parentUpdate(gameState)
 	}
 }
