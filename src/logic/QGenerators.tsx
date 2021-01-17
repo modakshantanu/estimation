@@ -2,6 +2,7 @@ import React from "react";
 import { Theme } from "../App";
 import AngleView from "../questionViews/AngleView";
 import AreaView from "../questionViews/AreaView";
+import CountingMovingView from "../questionViews/CountingMovingView";
 import CountingStaticView from "../questionViews/CountingStaticView";
 import LengthView from "../questionViews/LengthView";
 import TextView from "../questionViews/TextView";
@@ -157,6 +158,28 @@ export function genCounting (
     let shape = 'circle'
 
     return new Question(<CountingStaticView num={result} shape = {shape}/>, result, scorer, timeLimit)
+}
+
+export function genCountingMoving (
+    config: {
+        min: number,
+        max: number,
+        timeLimit: number
+    }
+) : Question {
+
+    let {min, max, timeLimit} = config;
+    let result = rngInt(min, max)
+
+    let scorer = (guess: number, actual: number) : number => {
+
+
+        let fraction = guess < actual ? (guess / actual) : (actual / guess)
+        return Math.round(fraction * 100)
+    }
+
+
+    return new Question(<CountingMovingView num={result}/>, result, scorer, timeLimit)
 }
 
 export function genArea (

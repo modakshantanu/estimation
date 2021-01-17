@@ -1,4 +1,4 @@
-import { genAngle, genArea, genCounting, genLength, genMul, genPerc } from "./QGenerators";
+import { genAngle, genArea, genCounting, genCountingMoving, genLength, genMul, genPerc } from "./QGenerators";
 
 let modes: any = [
     {
@@ -122,6 +122,39 @@ let modes: any = [
                 config: {
                     min: 100,
                     max: 500,
+                    timeLimit: 0,
+                }
+            }
+        ],
+        times: [0, 7000, 20000]
+    },
+    {
+        category: 'Counting (Moving)',
+        numQuestions: 5,
+        generator: genCountingMoving,
+
+        levels: [
+            {
+                name: '15-30',
+                config: {
+                    min: 15,
+                    max: 30,
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: '30 - 80',
+                config: {
+                    min: 30,
+                    max: 80,
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: '80 - 200',
+                config: {
+                    min: 81,
+                    max: 200,
                     timeLimit: 0,
                 }
             }
