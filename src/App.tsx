@@ -101,8 +101,8 @@ class App extends React.Component<any,stateType> {
     	return (
 			<div style = {appStyle}>
 				<HeaderView theme = {theme} sidebarHandler = {this.sidebarHandler} width = {this.state.width} />
-				{this.state.welcomePage && <div style={{right: 5, position: 'fixed'}}> View all modes ↑ </div>}
-				{this.state.welcomePage && <div style={{left: 5, position: 'fixed'}}> ↑ Settings </div>}
+				{this.state.welcomePage && <div style={{right: 5, position: 'fixed', fontSize: 20}}> View all modes ↑ </div>}
+				{this.state.welcomePage && <div style={{left: 5, position: 'fixed', fontSize: 20}}> ↑ Settings / Help</div>}
 				{this.state.welcomePage && <br/>}
 				<SettingsSidebar theme = {theme} visible = {this.state.leftBar} />
 				<Container>
@@ -146,14 +146,14 @@ class App extends React.Component<any,stateType> {
 	}
 
 
-	updateGamemode(category: string, numQ: number, generator: any, config: any, fromWelcomePage = false) {
+	updateGamemode(category: string, numQ: number, generator: any, config: any, helpText: string, fromWelcomePage = false) {
 		if (this.state.welcomePage) {
 			this.setState({welcomePage: false}, 
 			() => {
 				if (fromWelcomePage) {
 					this.sidebarRef.current?.handleUpdate(category)
 				}	
-				this.updateGamemode(category, numQ, generator, config)
+				this.updateGamemode(category, numQ, generator, config, helpText)
 			})
 		} 
 		let gameState = new GameState();
@@ -162,6 +162,7 @@ class App extends React.Component<any,stateType> {
 		gameState.generator = generator;
 		gameState.generatorconfig =config;
 		gameState.storageKey = `${category}|${config.timeLimit}`
+		gameState.helpText = helpText
 		this.centerRef.current?.parentUpdate(gameState)
 	}
 }

@@ -35,7 +35,7 @@ class ScoreView extends React.Component<propType, {}> {
         let errorStyle: CSSProperties = isTinyScreen ? {} : {float: "right"}
 
         let textStyle: CSSProperties = {
-            fontSize: (isTinyScreen ? '16px' : '19px')
+            fontSize: (isTinyScreen ? '16px' : '18px')
         }
 
         

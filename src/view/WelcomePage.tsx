@@ -71,7 +71,7 @@ class WelcomePage extends React.Component<propType, {}> {
 
         config.timeLimit = outerObj.times[0];
 
-        this.props.updateHandler(category, numQ, generator, config, true)
+        this.props.updateHandler(category, numQ, generator, config, outerObj.helpText, true)
     }
 }
 

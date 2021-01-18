@@ -52,7 +52,11 @@ class QuestionView extends React.Component<propType, any>{
         if (this.props.question) {
             return this.props.question?.view
         } 
-        return <TextView text= '---'/>
+        return (
+            <div style = {{...altFontStyle, fontSize: 20, fontFamily: this.props.theme.questionFont}}>
+            {this.props.gameState.helpText}
+            </div>  
+        )
     }
 }
 

@@ -181,8 +181,7 @@ class GamemodeSidebar extends React.Component<propType,stateType> {
         }
 
         config.timeLimit = this.state.timeLimit;
-
-        this.props.updateHandler(category, numQ, generator, config)
+        this.props.updateHandler(category, numQ, generator, config, outerObj.helpText)
     }
 
     handleUpdate(outer: string) {

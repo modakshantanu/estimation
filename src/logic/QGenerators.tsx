@@ -6,6 +6,7 @@ import CountingMovingView from "../questionViews/CountingMovingView";
 import CountingStaticView from "../questionViews/CountingStaticView";
 import LengthView from "../questionViews/LengthView";
 import TextView from "../questionViews/TextView";
+import VelocityView from "../questionViews/VelocityView";
 import Question from "./Question";
 
 type Range = {
@@ -222,6 +223,31 @@ export function genLength (
 
 
 }
+
+export function genSpeed (
+    config: {
+        center: number,
+        variance: number,
+        parallel: boolean,
+        timeLimit: number
+    }
+) : Question {
+
+    let {center, variance, parallel, timeLimit} = config;
+    let result = logRng(center, variance)
+
+    let v1 = rng(1,2)
+    let v2 = v1 * result
+
+    let scorer = (guess: number, actual: number) : number => {
+        let fraction = guess < actual ? (guess / actual) : (actual / guess)
+        return Math.round(fraction * 100)
+    }
+    return new Question(<VelocityView v1 = {v1} v2 = {v2} parallel = {parallel}/>, result, scorer, timeLimit)
+
+
+}
+
 
 
 

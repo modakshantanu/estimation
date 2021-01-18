@@ -1,10 +1,11 @@
-import { genAngle, genArea, genCounting, genCountingMoving, genLength, genMul, genPerc } from "./QGenerators";
+import { genAngle, genArea, genCounting, genCountingMoving, genLength, genMul, genPerc, genSpeed } from "./QGenerators";
 
 let modes: any = [
     {
         category: 'Multiplication',
         numQuestions: 5,
         generator: genMul,
+        helpText: 'Estimate the value of the mathematical expression',
 
         levels: [
             {
@@ -45,6 +46,7 @@ let modes: any = [
         category: 'Percentages',
         numQuestions: 5,
         generator: genPerc,
+        helpText: 'Estimate the value of the mathematical expression',
 
         levels: [
             {
@@ -73,6 +75,8 @@ let modes: any = [
         category: 'Angles',
         numQuestions: 5,
         generator: genAngle,
+        helpText: 'Estimate the angle shown (in degrees)',
+
 
         levels: [
             {
@@ -99,6 +103,7 @@ let modes: any = [
         category: 'Counting (Static)',
         numQuestions: 5,
         generator: genCounting,
+        helpText: 'Estimate the number of objects shown',
 
         levels: [
             {
@@ -132,6 +137,8 @@ let modes: any = [
         category: 'Counting (Moving)',
         numQuestions: 5,
         generator: genCountingMoving,
+        helpText: 'Estimate the number of objects shown',
+
 
         levels: [
             {
@@ -165,6 +172,7 @@ let modes: any = [
         category: 'Length',
         numQuestions: 5,
         generator: genLength,
+        helpText: 'If the white line is 1 unit long, estimate the length of the yellow line',
 
         levels: [
 
@@ -203,6 +211,8 @@ let modes: any = [
         category: 'Area',
         numQuestions: 5,
         generator: genArea,
+        helpText: 'If the white shape has an area of 1, estimate the area of the yellow shape',
+
 
         levels: [
 
@@ -221,6 +231,36 @@ let modes: any = [
                     center: 3,
                     variance: 4,
                     shape: 'polygon',
+                    timeLimit: 0,
+                }
+            },
+        ],
+        times: [0, 7000, 20000]
+    },
+    {
+        category: 'Speed',
+        numQuestions: 5,
+        generator: genSpeed,
+        helpText: 'If the white circle has a speed of 1, estimate the speed of the yellow circle',
+
+
+        levels: [
+
+            {
+                name: 'Parallel',
+                config: {
+                    center: 2,
+                    variance: 3,
+                    parallel: true,
+                    timeLimit: 0,
+                }
+            },
+            {
+                name: 'Any direction',
+                config: {
+                    center: 2,
+                    variance: 3,
+                    parallel: false,
                     timeLimit: 0,
                 }
             },

@@ -34,6 +34,7 @@ class GameState {
     generatorconfig: any = defaultConfig
     totalTime = 0
     storageKey = 'Multiplication (Easy)|0'
+    helpText = 'If the white line is 1 unit long, estimate the length of the yellow line'
     // constructor(category: string, generator: generatorType, numQuestions: number, config: any) {
     //     this.category = category
     //     this.generator = generator
