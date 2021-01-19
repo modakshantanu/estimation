@@ -35,7 +35,7 @@ class HeaderView extends React.Component<propType,{}> {
                     The Estimation Game
                 </span>
                 <i 
-                    className="fas fa-cog" 
+                    className="fas fa-question" 
                     style={{ ...iconStyle ,float: 'left'}}
                     onClick = {() => this.props.sidebarHandler('left')}
                 />
