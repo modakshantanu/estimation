@@ -61,8 +61,6 @@ class VelocityView extends React.Component<propType, {}> {
         this.generateParticles()
 
         cancelAnimationFrame(this.animtaionId)
-
-
         this.updatePositions()
 
 

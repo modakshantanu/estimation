@@ -1,4 +1,4 @@
-import { genAngle, genArea, genCounting, genCountingMoving, genLength, genMul, genPerc, genSpeed } from "./QGenerators";
+import { genAngle, genArea, genCounting, genCountingMoving, genExpo, genLength, genMul, genPerc, genSpeed, genTime } from "./QGenerators";
 
 let modes: any = [
     {
@@ -70,7 +70,37 @@ let modes: any = [
         ],
         times: [0, 10000, 30000]
     },
+    {
+        category: 'Exponentiation',
+        numQuestions: 5,
+        generator: genExpo,
+        helpText: 'Estimate the value of the mathematical expression',
 
+        levels: [
+            {
+                name: 'Interest',
+                config: {
+                    type: 'interest',
+                    timeLimit: 0
+                }
+            },
+            {
+                name: 'Huge',
+                config: {
+                    type: 'huge',
+                    timeLimit: 0
+                }
+            },
+            {
+                name: 'Insane',
+                config: {
+                    type: 'insane',
+                    timeLimit: 0
+                }
+            }
+        ],
+        times: [0, 15000, 40000]
+    },
     {
         category: 'Angles',
         numQuestions: 5,
@@ -267,7 +297,45 @@ let modes: any = [
         ],
         times: [0, 7000, 20000]
     },
-    
+    // {
+    //     category: 'Time',
+    //     numQuestions: 5,
+    //     generator: genTime,
+    //     helpText: 'Estimate the time (in seconds) for the Yellow timer to finish',
+
+
+    //     levels: [
+
+    //         {
+    //             name: 'Easy',
+    //             config: {
+    //                 min: 1500,
+    //                 max: 10000,
+    //                 reference: true,
+    //                 timeLimit: 0,
+    //             }
+    //         },
+    //         {
+    //             name: 'Hard',
+    //             config: {
+    //                 min: 1500,
+    //                 max: 10000,
+    //                 reference: false,
+    //                 timeLimit: 0,
+    //             }
+    //         },
+    //         {
+    //             name: 'Hard, Long',
+    //             config: {
+    //                 min: 10000,
+    //                 max: 30000,
+    //                 reference: false,
+    //                 timeLimit: 0,
+    //             }
+    //         },
+    //     ],
+    //     times: [0]
+    // },
 ]
 
 export default modes;
